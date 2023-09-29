@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="00stylosRegistro.css"> <!-- Archivo de estilos CSS -->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js"></script>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.contenedor {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px; /* Limita el ancho del contenedor para una mejor lectura */
+    margin: auto; /* Centra el contenedor en la pantalla */
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.campo {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h2>Iniciar Sesión</h2>
+        <form>
+            <div class="campo">
+                <label for="usuario">Usuario</label>
+                <input type="text" id="usuario" >
+            </div>
+            <div class="campo" >
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" >
+            </div>
+            <p style="color:gray; -webkit-text-stroke:0.4px gray">Inicio Rapido</p>
+             <div class="campo">
+               <label for="idComprador">Ingresa tu id de Comprador</label>
+               <input type="text" id="idComprador" style="width:70%" placeholder="opcional">
+             </div>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        <p>¿No tienes una cuenta? <a href="registro.html">Regístrate aquí</a>.</p>
+    </div>
+    <script>const firebaseConfig = {
+       apiKey: "AIzaSyCB0fQGAd7NSwgP-GWive4YRAU9v_uV1F8",
+       authDomain: "cooperativ-cb0d4.firebaseapp.com",
+       databaseURL: "https://cooperativ-cb0d4-default-rtdb.firebaseio.com",
+       projectId: "cooperativ-cb0d4",
+       storageBucket: "cooperativ-cb0d4.appspot.com",
+       messagingSenderId: "1009427324331",
+       appId: "1:1009427324331:web:5a125c9e46dfbbe87c86ee",
+       measurementId: "G-VB36CLTBCN"
+    };
+
+
+// Inicializa Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Referencia a la base de datos
+const database = firebase.database();
+</script>
+<script>
+  
+  // Agrega el SDK de Firebase y configura tu proyecto
+// ...
+
+
+
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    var usuario = document.getElementById('usuario').value;
+    var contrasena = document.getElementById('contrasena').value;
+    var idComprador = document.getElementById('idComprador').value;
+    var usuarioEncontrado = false;
+
+    var usuariosRef = firebase.database().ref('usuarios');
+    usuariosRef.once('value', function(snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+            if (childData.nombre === usuario && childData.contrasena === contrasena) {
+                console.log('Usuario encontrado:', childData);
+                localStorage.setItem('usuario', JSON.stringify(childData));
+                usuarioEncontrado = true;
+                return true;
+            }
+            if (childData.idConmprador === idComprador) {
+                console.log('Usuario encontrado por ID:', childData);
+                localStorage.setItem('usuario', JSON.stringify(childData));
+                window.location.href = 'go:login'; 
+                usuarioEncontrado = true;
+                return true;
+            }
+            
+
+        });
+
+        if (!usuarioEncontrado) {
+            console.log('Usuario no encontrado');
+        }
+    });
+});
+
+</script>
+</body>
+</html>
