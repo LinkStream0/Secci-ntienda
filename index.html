@@ -144,6 +144,8 @@ document.querySelector('form').addEventListener('submit', function(event) {
                 localStorage.setItem('usuario', JSON.stringify(childData));
                 usuarioEncontrado = true;
                 alert(childData);
+            
+window.parent.postMessage({ usuario: childData }, '*');
                 return true;
             }
             if (childData.idConmprador === idComprador) {
