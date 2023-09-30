@@ -143,7 +143,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
                 console.log('Usuario encontrado:', childData);
                 localStorage.setItem('usuario', JSON.stringify(childData));
                 usuarioEncontrado = true;
-                alert("childData");
+                alert(childData);
                 return true;
             }
             if (childData.idConmprador === idComprador) {
