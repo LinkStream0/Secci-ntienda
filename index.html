@@ -144,7 +144,9 @@ document.querySelector('form').addEventListener('submit', function(event) {
                 localStorage.setItem('usuario', JSON.stringify(childData));
                 usuarioEncontrado = true;
                 alert(childData);
-            
+  // Envía un mensaje al padre para solicitar que cierre el iframe
+window.parent.postMessage('cerrarIframe', '*');
+          
 window.parent.postMessage({ usuario: childData }, '*');
                 return true;
             }
